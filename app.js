@@ -192,7 +192,7 @@ btnPanic.addEventListener('click', async () => {
       topic: state.channel,
       message: `Vecino: ${state.name}\nLugar: ${state.house}`,
       title: "🚨 EMERGENCIA VECINAL",
-      priority: 5, // Máxima prioridad (Urgent)
+      priority: 4, // Prioridad Alta (evita el bucle infinito en Android)
       tags: ["rotating_light"],
       click: clickUrl.toString() // Abre la app al tocar
   };
@@ -220,6 +220,7 @@ btnPanic.addEventListener('click', async () => {
 
 // Sintetizador Web Audio API (No requiere archivos mp3 externos)
 function reproducirTonoSAE() {
+  if (isSirenPlaying) return; // BLOQUEO ANTI-DUPLICADOS: Asegura que el botón de Detener siempre funcione
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!audioCtx) audioCtx = new AudioContext();
